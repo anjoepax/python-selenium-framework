@@ -10,23 +10,21 @@ class WebDriverFactory:
 
     log = cl.custom_logger(logging.DEBUG)
 
-    def __init__(self, browser, run_mode="local"):
+    def __init__(self, browser, run_mode="local", remote_grid_url="http://localhost:4444/wd/hub"):
         self.browser = browser
         self.run_mode = run_mode
+        self.remote_grid_url = remote_grid_url
 
     def get_webdriver_instance(self):
         if self.run_mode.lower() == "remote":
             options = Options()
-            local_selenium_grid_url = "http://localhost:4444/wd/hub"
             if self.browser.lower() == "chrome":
                 options.set_capability("browserName", "chrome")
-                driver = webdriver.Remote(command_executor=local_selenium_grid_url, options=options)
             elif self.browser.lower() == "firefox":
                 options.set_capability("browserName", "firefox")
-                driver = webdriver.Remote(command_executor=local_selenium_grid_url,options=options)
             else:
                 options.set_capability("browserName", "MicrosoftEdge")
-                driver = webdriver.Remote(command_executor=local_selenium_grid_url, options=options)
+            driver = webdriver.Remote(command_executor=self.remote_grid_url, options=options)
         else:
             if self.browser.lower() == "chrome":
                 self.log.info("RUNNING ON CHROME BROWSER")
