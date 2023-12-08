@@ -22,17 +22,19 @@ class LoginPage(BasePage):
 
     def enter_username(self, username):
         self.wait_for_element(self._username_field, By.ID)
+        self.clear_input_field(self._username_field, By.ID)
         self.enter_input_field(username, self._username_field, By.ID)
 
     def enter_password(self, password):
         self.wait_for_element(self._password_field, By.ID)
+        self.clear_input_field(self._password_field, By.ID)
         self.enter_input_field(password, self._password_field, By.ID)
 
     def click_login_button(self):
         self.wait_for_element(self._login_btn, By.NAME)
         self.element_click(self._login_btn, By.NAME)
 
-    def login(self, user_name, password):
+    def login(self, user_name="", password=""):
         self.enter_username(user_name)
         self.enter_password(password)
         self.click_login_button()

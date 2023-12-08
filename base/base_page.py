@@ -1,15 +1,15 @@
+import logging
 from traceback import print_stack
 
-from selenium.common import NoSuchElementException, ElementNotVisibleException, ElementNotSelectableException
+from selenium.common import (NoSuchElementException, ElementNotVisibleException,ElementNotSelectableException)
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.wait import WebDriverWait
+
 import utilities.custom_logger as cl
-import logging
 
 
 class BasePage(object):
-
     log = cl.custom_logger(logging.DEBUG)
 
     def __init__(self, driver):
@@ -87,6 +87,21 @@ class BasePage(object):
             self.log.info(f"Cannot enter text on the element with locator [{locator}] and locator type [{locator_type}]")
             print_stack()
 
+    def clear_input_field(self, locator, locator_type="id"):
+        """
+        Custom method to clear input field
+        :param locator:
+        :param locator_type:
+        :return:
+        """
+        try:
+            element = self.get_element(locator, locator_type)
+            element.clear()
+            self.log.info(f"Input field is cleared with locator [{locator}] and locator type [{locator_type}]")
+        except:
+            self.log.info(f"Cannot clear field the element with locator [{locator}] and locator type [{locator_type}]")
+            print_stack()
+
     def is_element_present(self, locator, by_type):
         """
         Custom method to check if a certain element is present on the page
@@ -145,8 +160,10 @@ class BasePage(object):
                                                      ElementNotVisibleException,
                                                      ElementNotSelectableException])
             element = wait.until(ec.element_to_be_clickable((by_type, locator)))
-            self.log.info(f"Element appeared on the web page with locator [{locator}] and locator type [{locator_type}]")
+            self.log.info(
+                f"Element appeared on the web page with locator [{locator}] and locator type [{locator_type}]")
         except:
-            self.log.info(f"Element not appeared on the web page with locator [{locator}] and locator type [{locator_type}]")
+            self.log.info(
+                f"Element not appeared on the web page with locator [{locator}] and locator type [{locator_type}]")
             print_stack()
         return element

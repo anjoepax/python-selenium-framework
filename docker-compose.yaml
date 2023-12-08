@@ -1,0 +1,38 @@
+version: "3"
+services:
+  hub:
+    image: seleniarm/hub:4.10
+    ports:
+      - 4444:4444
+    # - 4442:4442
+    # - 4443:4443
+  chrome:
+    image: selenium/node-chrome:latest
+    shm_size: '2g'
+    depends_on:
+      - hub
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_VNC_PASSWORD=Testing123#!
+  firefox:
+    image: selenium/node-firefox:latest
+    shm_size: '2g'
+    depends_on:
+      - hub
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_VNC_PASSWORD=Testing123#!
+  edge:
+    image: selenium/node-edge:latest
+    shm_size: '2g'
+    depends_on:
+      - hub
+    environment:
+      - SE_EVENT_BUS_HOST=hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_VNC_PASSWORD=Testing123#!
